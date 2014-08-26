@@ -2,7 +2,6 @@ package com.rswebclients;
 
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
-import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -13,17 +12,21 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 public class RSWClassLoader extends URLClassLoader{
-	public RSWClassLoader(String serverName) throws MalformedURLException, UnsupportedEncodingException, URISyntaxException{
-		super(new URL[]{new URL(String.format("http://cdn.rsw.rs/files/jar/dl/%s.jar", serverName.replaceAll(" ", "%20")))});
+	
+	public static RSWClassLoader getRSWJar(String jar) throws MalformedURLException {
+		return new RSWClassLoader(String.format("http://cdn.rsw.rs/files/jar/dl/%s.jar", jar.replaceAll(" ", "%20")));
 	}
-
-	public RSWClassLoader(String serverName, boolean arbitrary) throws Exception{
-		//super(new URL[]{new URL("http://www.2005scape.org/2005Scape.jar")});
-		super(new URL[]{new URL(getJarLocation(serverName))});
+	
+	public static RSWClassLoader getExternalJar(String jar) throws Exception {
+		return new RSWClassLoader(getJarLocation(jar));
+	}
+	
+	public RSWClassLoader(String url) throws MalformedURLException {
+		super(new URL[]{new URL(url)});
 	}
 	
 	public static String getJarLocation(String serverName) throws Exception{
-		Document doc = Jsoup.connect("http://rswebclients.com/info/"+serverName).get();
+		final Document doc = Jsoup.connect("http://rswebclients.com/info/"+serverName).get();
 		final Elements elements = doc.select("a[href]");
 		for(Element e : elements) {
 			final String link = e.attr("abs:href");
@@ -31,7 +34,6 @@ public class RSWClassLoader extends URLClassLoader{
 				return formatForLoad(link);
 			}
 		}
-		doc = Jsoup.connect("http://rswebclients.com/info/"+serverName).userAgent("Mozilla").timeout(60000).get();
 		for(Element e : doc.getElementsByTag("a")) {
 			if(!e.text().equalsIgnoreCase("Visit the Website"))
 				continue;

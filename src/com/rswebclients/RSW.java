@@ -26,38 +26,34 @@ public class RSW {
 	
 	public static void init(String s) {
 		try {
-			if(destroy()) {
-				try {
-					loader = new RSWClassLoader(s);
-					rsw = loader.loadClass("RSWebclients");
-					data = ReflectionUtils.getFieldValue(rsw, "data", null);
-				} catch(Exception ex) {
-					loader = new RSWClassLoader(s, true);
-				}
-				clientClass = loader.loadClass("client");
-				client = new Client(clientClass, clientClass.newInstance());
-				client.getApplet().addKeyListener(new CommandListener());
-				Frame frame = MainFrame.getFrame();
-				frame.add(client.getApplet());
-				frame.setSize(MainFrame.getFrame().getPreferredSize());
-				frame.pack();
-				client.start();
-				ItemDef.init();
-				MainFrame.getFrame().setMessage("Currently playing: %s", s);
+			destroy();
+			try {
+				loader = RSWClassLoader.getRSWJar(s);
+				rsw = loader.loadClass("RSWebclients");
+				data = ReflectionUtils.getFieldValue(rsw, "data", null);
+			} catch(Exception ex) {
+				loader = RSWClassLoader.getExternalJar(s);
 			}
+			clientClass = loader.loadClass("client");
+			client = new Client(clientClass, clientClass.newInstance());
+			client.getApplet().addKeyListener(new CommandListener());
+			Frame frame = MainFrame.getFrame();
+			frame.add(client.getApplet());
+			frame.setSize(MainFrame.getFrame().getPreferredSize());
+			frame.pack();
+			client.start();
+			ItemDef.init();
+			MainFrame.getFrame().setMessage("Currently playing: %s", s);
 		}catch(Exception e) {
 			e.printStackTrace();
 			MainFrame.getFrame().setMessage("Failed to load: %s", s);
 		}
 	}
 	public static boolean destroy() {
-		if(loader == null)
-			return true;
 		try { 
 			MainFrame.getFrame().remove(client.getApplet());
 			client.close();
 		} catch(Exception ex) {
-			ex.printStackTrace();
 			return false;
 		}
 		return true;

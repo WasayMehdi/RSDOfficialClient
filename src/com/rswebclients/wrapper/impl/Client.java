@@ -41,5 +41,6 @@ public class Client extends Wrapper {
 	
 	public void close() {
 		getApplet().stop();
+		getApplet().destroy();
 	}
 }
