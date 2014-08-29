@@ -3,6 +3,7 @@ package com.rswebclients;
 import java.awt.Frame;
 import java.util.HashMap;
 
+
 import com.rswebclients.frame.MainFrame;
 import com.rswebclients.frame.listeners.CommandListener;
 import com.rswebclients.util.ReflectionUtils;
@@ -37,9 +38,9 @@ public class RSW {
 			clientClass = loader.loadClass("client");
 			client = new Client(clientClass, clientClass.newInstance());
 			client.getApplet().addKeyListener(new CommandListener());
-			Frame frame = MainFrame.getFrame();
+			MainFrame frame = MainFrame.getFrame();
+			frame.removeToplist();
 			frame.add(client.getApplet());
-			frame.setSize(MainFrame.getFrame().getPreferredSize());
 			frame.pack();
 			client.start();
 			ItemDef.init();

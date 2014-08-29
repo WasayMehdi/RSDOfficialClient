@@ -23,6 +23,10 @@ public class Client extends Wrapper {
 		return stream;
 	}
 	
+	public RSInterface getInv() {
+		return RSInterface.get(RSInterface.INVENT);
+	}
+	
 	public Player getMyPlayer() {
 		if(myPlayer == null) {
 			myPlayer = new Player(ReflectionUtils.getClass(RSW.getLoader(), "Player"),
@@ -34,7 +38,6 @@ public class Client extends Wrapper {
 	public void start() {
 		getApplet().init();
 		getApplet().start();
-		
 		this.stream = new Stream(ReflectionUtils.getClass(RSW.getLoader(), "Stream"),
 				ReflectionUtils.getFieldValue(wrappedClass, "stream", instance));
 	}
@@ -42,5 +45,13 @@ public class Client extends Wrapper {
 	public void close() {
 		getApplet().stop();
 		getApplet().destroy();
+	}
+	
+	public int getBaseX() {
+		return super.getFieldVal("baseX");
+	}
+	
+	public int getBaseY() {
+		return super.getFieldVal("baseX");
 	}
 }

@@ -26,7 +26,7 @@ public class RSWClassLoader extends URLClassLoader{
 	}
 	
 	public static String getJarLocation(String serverName) throws Exception{
-		final Document doc = Jsoup.connect("http://rswebclients.com/info/"+serverName).get();
+		final Document doc = Jsoup.connect("http://rswebclients.com/info/"+serverName).timeout(60000).get();
 		final Elements elements = doc.select("a[href]");
 		for(Element e : elements) {
 			final String link = e.attr("abs:href");

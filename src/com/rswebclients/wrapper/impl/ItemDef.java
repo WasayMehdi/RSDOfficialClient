@@ -34,7 +34,7 @@ public class ItemDef extends Wrapper{
 	}
 	
 	public List<String> getActions() {
-		List<String> list = new ArrayList<>(actions.length);
+		List<String> list = new ArrayList<String>(actions.length);
 		for(String action : actions)
 			if(action != null)
 				list.add(action.toLowerCase());

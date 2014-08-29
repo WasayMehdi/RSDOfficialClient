@@ -3,6 +3,7 @@ package com.rswebclients.wrapper.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.rswebclients.RSW;
 import com.rswebclients.util.ReflectionUtils;
 import com.rswebclients.wrapper.Wrapper;
 
@@ -17,7 +18,7 @@ public class Player extends Wrapper{
 	}
 	
 	public int getX() {
-		return super.getFieldVal("x");
+        return super.getFieldVal("x");
 	}
 	
 	public int getY() {

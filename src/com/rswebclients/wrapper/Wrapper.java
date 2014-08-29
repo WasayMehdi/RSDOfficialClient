@@ -39,7 +39,7 @@ public class Wrapper {
 	}
 	
 	public final Object invoke(String name, boolean wrapped, Object... args) {
-		List<Class<?>> classes = new ArrayList<>(args.length);
+		List<Class<?>> classes = new ArrayList<Class<?>>(args.length);
 		for(Object o : args) {
 			if(!wrapped)
 				classes.add(unwrap(o.getClass()));
